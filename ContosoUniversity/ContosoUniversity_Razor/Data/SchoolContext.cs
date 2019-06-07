@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ContosoUniversity_Razor.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace ContosoUniversity_Razor.Models
+namespace ContosoUniversity_Razor.Data
 {
     public class SchoolContext : DbContext
     {

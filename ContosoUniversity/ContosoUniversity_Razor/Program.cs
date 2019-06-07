@@ -1,13 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ContosoUniversity_Razor.Models;
+using ContosoUniversity_Razor.Data;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace ContosoUniversity_Razor
 {
@@ -23,7 +20,12 @@ namespace ContosoUniversity_Razor
                 try
                 {
                     var context = services.GetRequiredService<SchoolContext>();
-                    context.Database.EnsureCreated();
+
+                    // Or call the following line  a (DB Initializer)/
+                    // (DB Seeder) Initialize method
+                    context.Database.EnsureCreated(); 
+
+                    DbInitializer.Initialize(context);
                 }
                 catch (Exception ex)
                 {
