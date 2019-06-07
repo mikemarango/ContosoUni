@@ -30,10 +30,19 @@ namespace ContosoUniversity_Razor.Pages.Students
                 return Page();
             }
 
-            _context.Student.Add(Student);
-            await _context.SaveChangesAsync();
+            var emptyStudent = new Student();
 
-            return RedirectToPage("./Index");
+            if (await TryUpdateModelAsync(
+                emptyStudent,
+                "student",   // Prefix for form value.
+                s => s.FirstMidName, s => s.LastName, s => s.EnrollmentDate))
+            {
+                _context.Student.Add(emptyStudent);
+                await _context.SaveChangesAsync();
+                return RedirectToPage("./Index");
+            }
+
+            return null;
         }
     }
 }
