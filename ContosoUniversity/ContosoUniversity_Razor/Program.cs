@@ -21,9 +21,9 @@ namespace ContosoUniversity_Razor
                 {
                     var context = services.GetRequiredService<SchoolContext>();
 
-                    // Or call the following line  a (DB Initializer)/
-                    // (DB Seeder) Initialize method
-                    context.Database.EnsureCreated(); 
+                    //// Or call the following line  a (DB Initializer)/
+                    //// (DB Seeder) Initialize method
+                    //context.Database.EnsureCreated(); 
 
                     DbInitializer.Initialize(context);
                 }
