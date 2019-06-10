@@ -32,6 +32,10 @@ namespace ContosoUniversity_Razor.Pages.Instructors
                   .Include(i => i.CourseAssignments)
                     .ThenInclude(i => i.Course)
                     .ThenInclude(i => i.Department)
+                  .Include(i => i.CourseAssignments)
+                    .ThenInclude(i => i.Course)
+                    .ThenInclude(i => i.Enrollments)
+                    .ThenInclude(i => i.Student)
                   .AsNoTracking()
                   .OrderBy(i => i.LastName)
                   .ToListAsync()
@@ -48,8 +52,8 @@ namespace ContosoUniversity_Razor.Pages.Instructors
             if (courseID != null)
             {
                 CourseID = courseID.Value;
-                Instructor.Enrollments = Instructor.Courses.Where(
-                    x => x.CourseID == courseID).Single().Enrollments;
+                Instructor.Enrollments = Instructor.Courses.Single(
+                    x => x.CourseID == courseID).Enrollments;
             }
         }
     }
