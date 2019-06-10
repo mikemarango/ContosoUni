@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using ContosoUniversity_Razor.Data;
+using ContosoUniversity_Razor.Models.SchoolViewModels;
 
 namespace ContosoUniversity_Razor
 {
