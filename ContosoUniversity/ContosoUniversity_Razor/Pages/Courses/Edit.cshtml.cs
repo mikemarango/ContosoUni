@@ -11,7 +11,7 @@ using ContosoUniversity_Razor.Models;
 
 namespace ContosoUniversity_Razor.Pages.Courses
 {
-    public class EditModel : PageModel
+    public class EditModel : DepartmentNamePageModel
     {
         private readonly SchoolContext _context;
 
@@ -37,41 +37,32 @@ namespace ContosoUniversity_Razor.Pages.Courses
             {
                 return NotFound();
             }
-           ViewData["DepartmentID"] = new SelectList(_context.Departments, "DepartmentID", "DepartmentID");
+
+            PopulateDepartmentsDropDownList(_context, Course.DepartmentID);
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(int? id)
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            _context.Attach(Course).State = EntityState.Modified;
+            var courseToUpdate = await _context.Course.FindAsync(id);
 
-            try
+            if (await TryUpdateModelAsync<Course>(
+                 courseToUpdate,
+                 "course",   // Prefix for form value.
+                   c => c.Credits, c => c.DepartmentID, c => c.Title))
             {
                 await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CourseExists(Course.CourseID))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return RedirectToPage("./Index");
             }
 
-            return RedirectToPage("./Index");
-        }
-
-        private bool CourseExists(int id)
-        {
-            return _context.Course.Any(e => e.CourseID == id);
+            // Select DepartmentID if TryUpdateModelAsync fails.
+            PopulateDepartmentsDropDownList(_context, courseToUpdate.DepartmentID);
+            return Page();
         }
     }
 }
